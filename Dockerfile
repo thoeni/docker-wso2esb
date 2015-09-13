@@ -12,9 +12,9 @@ ENV WSO2_SOFT_VER=4.8.1
 RUN     wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip && \
 	yum update -y && \
 	yum install -y unzip && \
-	mv /opt/wso2esb-${WSO2_SOFT_VER}.zip /opt/wso2esb.zip
-        unzip /opt/wso2esb.zip -d /opt && \
-        rm /opt/wso2esb.zip
+        unzip /opt/wso2esb-${WSO2_SOFT_VER}.zip -d /opt && \
+	mv /opt/wso2esb-${WSO2_SOFT_VER} /opt/wso2esb && \
+        rm /opt/wso2esb-${WSO2_SOFT_VER}.zip
 
 EXPOSE 9443
 EXPOSE 9763
