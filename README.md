@@ -5,10 +5,10 @@ Docker image to install and run WSO2 Enterprise Service Bus. It uses the [thoeni
 
 The dockerfile will:
 
-* Use `wget` to pull the ESB 4.8.1 ZIP from a the official WSO2 website, and copies into container `/opt` folder.
+* Use `wget` to pull the ESB latest version (tags are available for 4.8.1 and 4.9.0) ZIP from a the official WSO2 website, and copies into container `/opt` folder.
 * Install `unzip`.
-* Unzip the ESB 4.8.1 ZIP.
-* Remove the ESB 4.8.1 ZIP.
+* Unzip the ESB ZIP archive.
+* Remove the ESB ZIP archive.
 * Expose the container port `9443`.
 * Set the ESB `wso2server.sh` start-up script as the container start-up command.
 
