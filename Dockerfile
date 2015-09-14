@@ -14,7 +14,10 @@ RUN     wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/
 	yum install -y unzip && \
         unzip /opt/wso2esb-${WSO2_SOFT_VER}.zip -d /opt && \
 	mv /opt/wso2esb-${WSO2_SOFT_VER} /opt/wso2esb && \
-        rm /opt/wso2esb-${WSO2_SOFT_VER}.zip
+        rm /opt/wso2esb-${WSO2_SOFT_VER}.zip && \
+	sed -i.bak '/<StatisticsReporterDisabled>/ s/true/false/' wso2esb-${WSO2_SOFT_VER}/repository/conf/carbon.xml && \
+	sed -i.bak '/<parameter name="cachableDuration">/ s/15000/1000/' wso2esb-${WSO2_SOFT_VER}/repository/deployment/server/synapse-configs/default/registry.xml && \
+	echo -e "<BamConfig>\n\t<ServiceDataPublishing>enable</ServiceDataPublishing>\n\t<WebappDataPublishing>disable</WebappDataPublishing>\n</BamConfig>" > wso2esb-${WSO2_SOFT_VER}/repository/conf/etc/bam.xml
 
 EXPOSE 9443
 EXPOSE 9763
