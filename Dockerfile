@@ -1,8 +1,8 @@
 #
-# WSO2 ESB 4.8.1 on CentOS Linux with Oracle JDK 1.7.0_80
+# WSO2 ESB 4.9.0 on CentOS Linux with Oracle JDK 1.8.0_60
 #
 
-FROM	thoeni/centos-oracle-java:1.7.0_80
+FROM	thoeni/centos-oracle-java:1.8.0_60
 
 MAINTAINER Antonio Troina, thoeni@gmail.com
 
