@@ -2,23 +2,20 @@
 # WSO2 ESB 4.9.0 on CentOS Linux with Oracle JDK 1.8.0_60
 #
 
-FROM	thoeni/centos-oracle-java:1.8.0_60
+FROM	thoeni/wso2esb:latest
 
 MAINTAINER Antonio Troina, thoeni@gmail.com
 
-ENV WSO2_SOFT_VER=4.9.0
+ENV 	MB_CONTAINER_NAME=wso2mb
 
-# copy zip from local folder to container
-RUN     wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip && \
-	yum update -y && \
-	yum install -y unzip && \
-        unzip /opt/wso2esb-${WSO2_SOFT_VER}.zip -d /opt && \
-	mv /opt/wso2esb-${WSO2_SOFT_VER} /opt/wso2esb && \
-        rm /opt/wso2esb-${WSO2_SOFT_VER}.zip
+ADD	lib /opt/wso2esb/repository/components/lib/
+ADD 	esb.properties /opt/wso2esb/
 
-EXPOSE 9443
-EXPOSE 9763
-EXPOSE 8243
-EXPOSE 8280
+RUN	sed -i -e "/5672/ s/localhost/${MB_CONTAINER_NAME}/" /opt/wso2esb/repository/conf/jndi.properties && \
+	sed -i -e '/5672/ p;s/QueueConnectionFactory/TopicConnectionFactory/' /opt/wso2esb/repository/conf/jndi.properties && \
+	sed -i -e '/WSO2 MB/ {' -e 'n; s/<!--/</' -e '}' /opt/wso2esb/repository/conf/axis2/axis2.xml && \
+	sed -i -e '/WSO2 MB/ {' -e 'n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n;n; s/-->/>/' -e '}' /opt/wso2esb/repository/conf/axis2/axis2.xml && \
+	sed -i -e '/use connection pools for sending messages/ {' -e ' s/>/-->/' -e '}' /opt/wso2esb/repository/conf/axis2/axis2.xml && \
+	sed -i -e '/use connection pools for sending messages/ {' -e 'n; s/-->/>/' -e '}' /opt/wso2esb/repository/conf/axis2/axis2.xml 
 
-CMD ["/opt/wso2esb/bin/wso2server.sh"]	
+CMD ["/opt/wso2esb/bin/wso2server.sh"]
