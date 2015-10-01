@@ -12,7 +12,7 @@ The dockerfile will:
 
 ### Usage
 * Clone the current repository, and `git checkout message-broker` to select the proper branch
-* Before building: configure the appropriate docker container name for the WSO2 Message Broker (that should be already running on your Docker host)
+* Before building: configure within the Dockerfile the appropriate MB_CONTAINER_NAME variable, with the name of the docker container for the WSO2 Message Broker (that should be already running on your Docker host)
 * To build, from the project root folder: `docker build --rm -t your_image_name .`
 * To run: `docker run --rm --name your_container_name -p 9443:9443 -p 8280:8280 your_image_name`
 * To access ESB web admin console, navigate to `https://[DOCKER_HOST]:9443`
