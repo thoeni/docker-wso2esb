@@ -1,16 +1,26 @@
 #
-# WSO2 ESB 4.9.0 on CentOS Linux with Oracle JDK 1.8.0_60
+# WSO2 ESB on Ubuntu Linux with Oracle JDK
 #
 
 FROM 	ubuntu:latest
 
 MAINTAINER Antonio Troina, thoeni@gmail.com
 
-ENV 	WSO2_SOFT_VER=4.9.0
-ENV 	JAVA_VERSION=8
+#	Depending on project needs, the following three variables can be changed accordingly:
 
-# Install Java8
-RUN 	apt-get install software-properties-common && \
+#	Version of the ESB you want to install on this image, and run within the container
+ENV 	WSO2_SOFT_VER=4.8.1
+
+#	Oracle Java you want the container to run with (typically ESB 4.8.1 goes with Java7, and ESB 4.9.0 can run with Java8)
+ENV 	JAVA_VERSION=7
+
+#	Whether you want the image to be built using as ESB source repository the official WSO2 Website, or a public AWS S3 Bucket
+ENV 	DL_WSO2_WEBSITE=false
+
+ENV 	JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-oracle
+
+	# Install Java
+RUN 	apt-get install software-properties-common -y && \
 	add-apt-repository ppa:webupd8team/java --yes && \
 	apt-get update && \
 	echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && \
@@ -20,17 +30,16 @@ RUN 	apt-get install software-properties-common && \
 	grep JAVA_HOME ~/.bashrc || echo "export JAVA_HOME='/usr/lib/jvm/java-${JAVA_VERSION}-oracle'" >> ~/.bashrc && \
 	export JAVA_HOME='/usr/lib/jvm/java-${JAVA_VERSION}-oracle'
 
-ENV 	JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-oracle/
-
-# Install latest version of ESB
+	# Install latest version of ESB through official WSO2 Website
 RUN 	apt-get update -y && \
 	apt-get install -y wget && \
-	wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip && \
+	if ${DL_WSO2_WEBSITE} == true; then wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip; else wget -P /opt https://s3-us-west-2.amazonaws.com/wso2-stratos/wso2esb-${WSO2_SOFT_VER}.zip; fi && \
 	apt-get install -y unzip && \
         unzip /opt/wso2esb-${WSO2_SOFT_VER}.zip -d /opt && \
 	mv /opt/wso2esb-${WSO2_SOFT_VER} /opt/wso2esb && \
         rm /opt/wso2esb-${WSO2_SOFT_VER}.zip
 
-EXPOSE 9443 9763 8243 8280
+#	Expose basic ports from ESB
+EXPOSE 	9443 9763 8243 8280
 
 CMD ["/opt/wso2esb/bin/wso2server.sh"]	
