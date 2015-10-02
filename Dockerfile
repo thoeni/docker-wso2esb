@@ -9,7 +9,6 @@ MAINTAINER Antonio Troina, thoeni@gmail.com
 ENV 	MB_CONTAINER_NAME=wso2mb
 
 ADD	lib /opt/wso2esb/repository/components/lib/
-ADD 	esb.properties /opt/wso2esb/
 
 RUN	sed -i -e "/5672/ s/localhost/${MB_CONTAINER_NAME}/" /opt/wso2esb/repository/conf/jndi.properties && \
 	sed -i -e '/5672/ p;s/QueueConnectionFactory/TopicConnectionFactory/' /opt/wso2esb/repository/conf/jndi.properties && \
