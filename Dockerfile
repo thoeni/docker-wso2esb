@@ -10,7 +10,8 @@ ENV 	WSO2_SOFT_VER=4.9.0
 ENV 	JAVA_VERSION=8
 
 # Install Java8
-RUN	add-apt-repository ppa:webupd8team/java --yes && \
+RUN 	apt-get install software-properties-common && \
+	add-apt-repository ppa:webupd8team/java --yes && \
 	apt-get update && \
 	echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && \
 	echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections && \
@@ -19,11 +20,12 @@ RUN	add-apt-repository ppa:webupd8team/java --yes && \
 	grep JAVA_HOME ~/.bashrc || echo "export JAVA_HOME='/usr/lib/jvm/java-${JAVA_VERSION}-oracle'" >> ~/.bashrc && \
 	export JAVA_HOME='/usr/lib/jvm/java-${JAVA_VERSION}-oracle'
 
-ENV	JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-oracle/
+ENV 	JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-oracle/
 
 # Install latest version of ESB
-RUN     wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip && \
-	apt-get update -y && \
+RUN 	apt-get update -y && \
+	apt-get install -y wget && \
+	wget -P /opt --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://product-dist.wso2.com/products/enterprise-service-bus/${WSO2_SOFT_VER}/wso2esb-${WSO2_SOFT_VER}.zip && \
 	apt-get install -y unzip && \
         unzip /opt/wso2esb-${WSO2_SOFT_VER}.zip -d /opt && \
 	mv /opt/wso2esb-${WSO2_SOFT_VER} /opt/wso2esb && \
