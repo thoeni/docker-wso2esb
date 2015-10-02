@@ -15,8 +15,8 @@ The dockerfile will:
 ### Usage
 * To pull: `docker pull thoeni/wso2esb:ubuntu`
 * To build: 
-** Clone this git repository: `git clone https://github.com/thoeni/docker-wso2esb.git` or `git clone git@github.com:thoeni/docker-wso2esb.git`
-** Edit the Dockerfile with the desired configuration about ESB version, Java version, ESB zip file source URL (by default ESB 4.8.1, Java7 and S3 Bucket)
-** Build the docker image `docker build --rm -t your_image_name github.com/thoeni/docker-wso2esb`
+  * Clone this git repository: `git clone https://github.com/thoeni/docker-wso2esb.git` or `git clone git@github.com:thoeni/docker-wso2esb.git`
+  * Edit the Dockerfile with the desired configuration about ESB version, Java version, ESB zip file source URL (by default ESB 4.8.1, Java7 and S3 Bucket)
+  * Build the docker image `docker build --rm -t your_image_name github.com/thoeni/docker-wso2esb`
 * To run: `docker run --rm --name your_container_name -p 9443:9443 -p 8280:8280 your_image_name`
 * To access ESB web admin console, navigate to `https://[DOCKER_HOST]:9443`
